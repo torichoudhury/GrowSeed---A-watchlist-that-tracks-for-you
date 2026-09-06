@@ -1,0 +1,50 @@
+services:
+  - type: web
+    name: smw-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile.vercel
+    dockerContext: ./backend
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Render injects PORT automatically — the app reads process.env.PORT so
+      # this just works; do NOT set PORT manually in the dashboard.
+      - key: DATABASE_URL
+        sync: false   # set in Render dashboard — use pooler URI port 6543
+      - key: REDIS_URL
+        sync: false   # set in Render dashboard
+      - key: JWT_SECRET
+        sync: false   # set in Render dashboard
+      - key: JWT_EXPIRES_IN
+        value: "7d"
+      - key: PG_POOL_MAX
+        value: "3"
+      - key: CORS_ORIGIN
+        value: "https://smart-market-watchlist-rho.vercel.app,https://smart-market-watchlist.vercel.app,*"
+      # Demo / replay mode settings
+      # The replayed session must come AFTER the demo baseline (below), or the
+      # "since you last checked" window would point into the future. Re-run
+      # `npm run demo:seed` after changing either.
+      - key: DEMO_AS_OF
+        value: "2026-09-04"
+      - key: DEMO_SPEED
+        value: "6"
+      - key: DEMO_LABEL
+        value: "on"
+      - key: DEMO_AUTO_ACK
+        value: "off"
+      - key: DEMO_SESSION_START
+        value: "09:15"
+      - key: DEMO_LOOP
+        # Derive replay position from wall clock, not process start.
+        # This makes every cold start (Render's free tier sleeps after 5 min)
+        # resume at the correct session position instead of rewinding to 09:15
+        # and serving zero prices until the first bar elapses.
+        value: "on"
+      # "You last checked" moment for the demo (fixture: Monday 31 Aug 2026,
+      # 10:00 IST — the last Monday before the demo's "today") — see
+      # services/demo/baseline.ts.
+      - key: DEMO_BASELINE_AT
+        value: "2026-08-31T10:00:00+05:30"

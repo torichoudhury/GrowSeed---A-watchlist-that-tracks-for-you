@@ -1,0 +1,34 @@
+# Vercel builds this service as a container image (vercel.json → services.backend).
+# A container is used rather than a plain Node function because this is a normal
+# long-running Express app: it owns its own HTTP server and its own lifecycle.
+FROM node:22-alpine AS build
+WORKDIR /app
+
+# Dependencies first, so a source-only change reuses the install layer.
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY tsconfig.json ./
+COPY src ./src
+RUN npm run build
+
+# ── Runtime image: production dependencies and compiled JS only ──────────────
+FROM node:22-alpine AS runtime
+WORKDIR /app
+ENV NODE_ENV=production
+
+# PORT is injected at runtime by the platform (Vercel defaults to 80,
+# Render injects its own value). The app reads process.env.PORT, so we
+# do NOT hardcode it here — let the platform control it.
+
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+
+COPY --from=build /app/dist ./dist
+
+# Run unprivileged. The node image ships a `node` user for exactly this.
+USER node
+
+# Document the default; actual port comes from the PORT env var at runtime.
+EXPOSE 8080
+CMD ["node", "dist/index.js"]

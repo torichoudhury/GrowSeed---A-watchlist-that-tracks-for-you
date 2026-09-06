@@ -1,0 +1,78 @@
+# ==============================================================================
+# Smart Market Watchlist - System & Runtime Requirements
+# ==============================================================================
+# This project is built primarily with Node.js / TypeScript / Next.js.
+# This file specifies all environment, runtime, database, and package requirements
+# formatted for human and automated dependency-check compatibility.
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. System & Engine Requirements
+# ------------------------------------------------------------------------------
+# Node.js: >= 20.0.0 (Node 24 LTS recommended)
+# npm: >= 10.0.0
+# Operating System: Linux, macOS, or Windows (PowerShell / WSL)
+
+# ------------------------------------------------------------------------------
+# 2. Database & Infrastructure Services
+# ------------------------------------------------------------------------------
+# PostgreSQL: >= 15.0 (Supabase or self-hosted PostgreSQL with pgvector/timescale optional)
+# Redis: >= 7.0 (Upstash Redis or self-hosted Redis instance)
+# WebSocket: RFC 6455 compliant server/client support
+
+# ------------------------------------------------------------------------------
+# 3. Backend Core Dependencies (backend/package.json)
+# ------------------------------------------------------------------------------
+# express>=5.2.1
+# pg>=8.23.0
+# redis>=6.2.1
+# ws>=8.21.3
+# jsonwebtoken>=9.0.3
+# bcryptjs>=3.0.3
+# node-cron>=4.6.0
+# dotenv>=17.4.2
+# csv-parse>=7.0.2
+# express-rate-limit>=8.7.0
+# tsx>=4.23.13
+# typescript>=7.0.2
+
+# ------------------------------------------------------------------------------
+# 4. Frontend Core Dependencies (frontend/package.json)
+# ------------------------------------------------------------------------------
+# next>=16.3.4
+# react>=19.2.8
+# react-dom>=19.2.8
+# @tanstack/react-query>=5.102.8
+# @tanstack/react-query-devtools>=5.102.8
+# lightweight-charts>=5.2.1
+# lucide-react>=1.40.0
+# tailwindcss>=4.0.0
+# @tailwindcss/postcss>=4.0.0
+# clsx>=2.1.1
+# tailwind-merge>=3.6.0
+# eslint>=9.0.0
+# eslint-config-next>=16.3.4
+
+# ------------------------------------------------------------------------------
+# 5. Environment Variables Requirement Summary
+# ------------------------------------------------------------------------------
+# Backend:
+#   DATABASE_URL (PostgreSQL connection string with pooling/keepalives)
+#   REDIS_URL (Redis connection string, e.g., rediss://...)
+#   JWT_SECRET (Cryptographic secret for auth tokens)
+#   JWT_EXPIRES_IN (e.g. 7d)
+#   PORT (default: 8080)
+#   CORS_ORIGIN (e.g. http://localhost:3000)
+#   MARKET_DATA_PROVIDER (yahoo | groww)
+#   GROWW_API_KEY (optional, if MARKET_DATA_PROVIDER=groww)
+#   GROWW_API_SECRET (optional, if MARKET_DATA_PROVIDER=groww)
+#   DEMO_AS_OF (e.g. 2026-09-04, for real-data replay)
+#   DEMO_SPEED (e.g. 6)
+#   DEMO_SESSION_START (e.g. 09:15)
+#   DEMO_BASELINE_AT (e.g. 2026-07-20T10:00:00+05:30)
+#   DEMO_AUTO_ACK (off | on)
+#   DEMO_LABEL (on | off)
+#
+# Frontend:
+#   NEXT_PUBLIC_API_URL (e.g. http://localhost:8080)
+#   NEXT_PUBLIC_WS_URL (e.g. ws://localhost:8080/ws)
