@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND = process.env.BACKEND_URL || 'https://smw-backend-04kw.onrender.com';
+const BACKEND = process.env.BACKEND_URL || 'https://growseed-a-watchlist-that-tracks-for-you.onrender.com';
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
   return proxy(req, await params);
